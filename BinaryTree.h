@@ -205,20 +205,17 @@ public:
     }
 
     
-
-
     void inorder(){
-
+        if(root != nullptr) inorder(root);
     }
-
    
 
     void preorder(){
-
+        if(root != nullptr) preorder(root);
     }
 
     void postorder(){
-
+        if(root != nullptr) postorder(root);
     }
 
 };
