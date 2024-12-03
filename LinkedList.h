@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 class LinkedList {
 private:
@@ -25,6 +26,14 @@ public:
         size = 0;
     }
 
+    // constructor that accepts a vector of values
+    LinkedList(std::vector<int> values) : LinkedList() {
+        // insert values in order
+        for(int i = 0; i < (int) values.size(); i++){
+            insert(values[i]);
+        }
+    }
+
     // insert value at the end of the list
     void insert(int value){
         Node * node = new Node(value);
@@ -33,12 +42,10 @@ public:
         if(head == nullptr){
             head = node;
             tail = node;
-        }
-
-        // use tail to insert
-        tail->next = node;
-        tail = node;
-
+        } else {
+            tail->next = node;
+            tail = node;
+        }       
 
         size++;
         return;
@@ -50,6 +57,9 @@ public:
         if(index >= size){
             return insert(value);
         }
+
+        if(index == -1) return insert(value);   // end of list
+        if(index < -1) return;  // invalid index
 
         Node * node = new Node(value);
 
@@ -79,6 +89,7 @@ public:
             Node * temp = head->next;
             delete head;
             head = temp;
+            if(head == nullptr) tail = nullptr;
             return true;
         }
 
@@ -88,7 +99,7 @@ public:
             last = current;
             current = current->next;
             // if last node
-            if(current->next == nullptr) return false;
+            if(current == nullptr) return false;
         }
 
         // last node
@@ -109,6 +120,7 @@ public:
     // 
     bool removeIndex(int index){
         if(index >= size) return false;
+        if(index < 0) return false;
 
         if(index == 0){
             Node * temp = head->next;
@@ -143,28 +155,36 @@ public:
     int find(int value){
         Node * current = head;
         int counter = 0;
-        while(current->next != nullptr){
+        while(current != nullptr){
             if(current->value == value){
                 return counter;
             }
             counter++;
+            current = current->next;
         }
         return -1;
     }
 
     void print(){
+        if(head == nullptr) return;
         Node * current = head;
-        while(current->next != nullptr){
+        while(current != nullptr){
             std::cout << current->value << " ";
+            current = current->next;
         }
+        std::cout << "\n";
     }
 
     std::string printString(){
+        if(head == nullptr) return "";
         Node * current = head;
         std::string s;
-        while(current->next != nullptr){
-            s += current->value + " ";
+
+        while(current != nullptr){
+            s += std::to_string(current->value) + " ";
+            current = current->next;
         }
+        return s;
     }
 
     int tailValue(){
@@ -176,10 +196,10 @@ public:
     ~LinkedList(){
         // delete all nodes (heap allocated)
         Node * current = head;
-        while(current->next != nullptr){
-            Node * temp = current->next;
+        while(current != nullptr){
+            Node * next = current->next;
             delete current;
-            current = temp;
+            current = next;
         }
     }
 

@@ -11,48 +11,63 @@ private:
         return list.printString() == expectedList && list.tailValue() == expectedLastValue;
     }
 
-    LinkedList createList(std::vector<int> values){
-        LinkedList l;
-        for(int i = 0; i < values.size(); i++) l.insert(values[i]);
-        return l;
-    }
 
 
     // insert function tests
     void insert(){
         // empty list
-        LinkedList l = createList({});
-        assert(checkList(l, "", -1));
+        {
+            LinkedList l = LinkedList();
+            assert(checkList(l, "", -1));
+            std::cout << "test 1 passed" << std::endl;
+        }
 
-        // 3 elements
-        LinkedList l = createList({5, 6, 2});
-        assert(checkList(l, "5 6 2", 2));
+        {
+            // 3 elements
+            LinkedList l = LinkedList({5, 6, 2, 1});
+            assert(checkList(l, "5 6 2 1 ", 1));
+            std::cout << "test 2 passed" << std::endl;
+        }
     }
 
     // middle index insertion
     void insertIndex(){
+        std::cout << "insertIndex tests" << std::endl;
+        
         // bounds check
-        LinkedList l = createList({1, 7, 5});
-        l.insertIndex(20, 2);  // insert 2 at pos 20
-        assert(checkList(l, "1 7 5 2", 2)); // should insert at end of list
+        { 
+            LinkedList l = LinkedList({1, 7, 5});
+            l.insertIndex(20, 2);  // insert 2 at pos 20
+            assert(checkList(l, "1 7 5 2 ", 2)); // should insert at end of list
+            std::cout << "test 1 passed" << std::endl;
+        }
 
 
         // middle index insertion
-        LinkedList l = createList({1, 7, 5});
-        // attempt to insert 2 between 1 and 7 at index 1
-        l.insertIndex(1, 2);
-        assert(checkList(l, "1 2 7 5", 5));
+        {
+            LinkedList l = LinkedList({1, 7, 5});
+            // attempt to insert 2 between 1 and 7 at index 1
+            l.insertIndex(1, 2);
+            assert(checkList(l, "1 2 7 5 ", 5));
+            std::cout << "test 2 passed" << std::endl;
+        }
 
         // start index insertion
-        l = createList({1, 7, 5});
-        // attempt to insert 3 at index 0
-        l.insertIndex(0, 3);
-        assert(checkList(l, "3 1 7 5", 5));
+        {
+            LinkedList l = LinkedList({1, 7, 5});
+            // attempt to insert 3 at index 0
+            l.insertIndex(0, 3);
+            assert(checkList(l, "3 1 7 5 ", 5));
+            std::cout << "test 3 passed" << std::endl;
+        }
 
         // end index insertion
-        l = createList({4, 7, 5});
-        l.insertIndex(-1, 10);  // insert 10 a back of list
-        assert(checkList(l, "4 7 5 10", 10));
+        {
+            LinkedList l = LinkedList({4, 7, 5});
+            l.insertIndex(-1, 10);  // insert 10 a back of list
+            assert(checkList(l, "4 7 5 10 ", 10));
+            std::cout << "test 4 passed" << std::endl;
+        }
     }
 
 
@@ -60,70 +75,103 @@ private:
     // remove by value tests
     void remove(){
         // test empty list
-        LinkedList l = createList({});
-        assert(l.remove(5) == false);
-        assert(checkList(l, "", -1));
+        {
+            LinkedList l = LinkedList();
+            assert(l.remove(5) == false);
+            assert(checkList(l, "", -1));
+            std::cout << "test 1 passed" << std::endl;
+        }
 
         // test invalid value
-        l = createList({5, 6, 2});
-        assert(l.remove(10) == false);
-        assert(checkList(l, "5 6 2", 2));
+        {
+            LinkedList l = LinkedList({5, 6, 2});
+            assert(l.remove(10) == false);
+            assert(checkList(l, "5 6 2 ", 2));
+            std::cout << "test 2 passed" << std::endl;
+        }
 
         // remove from middle
-        LinkedList l = createList({5, 6, 2});
-        assert(l.remove(6) == true);
-        assert(checkList(l, "5 2", 2));
+        {
+            LinkedList l = LinkedList({5, 6, 2});
+            assert(l.remove(6) == true);
+            assert(checkList(l, "5 2 ", 2));
+            std::cout << "test 3 passed" << std::endl;
+        }
 
         // remove from start
-        l = createList({5, 6, 2});
-        assert(l.remove(5) == true);
-        assert(checkList(l, "6 2", 2));
+        {
+            LinkedList l = LinkedList({5, 6, 2});
+            assert(l.remove(5) == true);
+            assert(checkList(l, "6 2 ", 2));
+            std::cout << "test 4 passed" << std::endl;
+        }
 
         // remove from end
-        l = createList({5, 6, 2});
-        assert(l.remove(2) == true);
-        assert(checkList(l, "5 6", 6));
+        {
+            LinkedList l = LinkedList({5, 6, 2});
+            assert(l.remove(2) == true);
+            assert(checkList(l, "5 6 ", 6));
+            std::cout << "test 5 passed" << std::endl;
+        }
     }
 
 
     // remove index test - middle
     void removeIndex(){
         // remove from empty list
-        LinkedList l = createList({});
-        assert(l.removeIndex(0) == false);
-        assert(checkList(l, "", -1));
+        {
+            LinkedList l = LinkedList();
+            assert(l.removeIndex(0) == false);
+            assert(checkList(l, "", -1));
+            std::cout << "test 1 passed" << std::endl;
+        }
 
         // remove from out of bounds index
-        l = createList({5, 6, 2});
-        assert(l.removeIndex(10) == false);
-        assert(checkList(l, "5 6 2", 2));
+        {
+            LinkedList l = LinkedList({5, 6, 2});
+            assert(l.removeIndex(10) == false);
+            assert(checkList(l, "5 6 2 ", 2));
+            std::cout << "test 2 passed" << std::endl;
+        }
 
         // remove from negative index
-        l = createList({5, 6, 2});
-        assert(l.removeIndex(-1) == false);
-        assert(checkList(l, "5 6 2", 2));
+        {
+            LinkedList l = LinkedList({5, 6, 2});
+            assert(l.removeIndex(-1) == false);
+            assert(checkList(l, "5 6 2 ", 2));
+            std::cout << "test 3 passed" << std::endl;
+        }
 
         // remove middle index 2 - (2)
-        LinkedList l = createList({5, 6, 2, 8});
-        assert(l.removeIndex(2) == true);
-        assert(checkList(l, "5 6 8", 8));
+        {
+            LinkedList l = LinkedList({5, 6, 2, 8});
+            assert(l.removeIndex(2) == true);
+            assert(checkList(l, "5 6 8 ", 8));
+            std::cout << "test 4 passed" << std::endl;
+        }
 
         // remove first index 0 - (5)
-        l = createList({5, 6, 2, 8});
-        assert(l.removeIndex(0) == true);
-        assert(checkList(l, "6 2 8", 8));
+        {
+            LinkedList l = LinkedList({5, 6, 2, 8});
+            assert(l.removeIndex(0) == true);
+            assert(checkList(l, "6 2 8 ", 8));
+            std::cout << "test 5 passed" << std::endl;
+        }
 
         // remove last index 3 - (8)
-        l = createList({5, 6, 2, 8});
-        assert(l.removeIndex(3) == true);
-        assert(checkList(l, "5 6 2", 2));
+        {
+            LinkedList l = LinkedList({5, 6, 2, 8});
+            assert(l.removeIndex(3) == true);
+            assert(checkList(l, "5 6 2 ", 2));
+            std::cout << "test 6 passed" << std::endl;
+        }
 
     }
 
 
     // find test
     void find(){
-        LinkedList l = createList({5, 6, 2, 8});
+        LinkedList l = LinkedList({5, 6, 2, 8});
         // l.insert(5);//0
         // l.insert(6);//1
         // l.insert(2);//2
@@ -137,11 +185,26 @@ private:
 
 
 public:
-    LinkedListTest(){
+    LinkedListTest(){}
+
+    void run(){
+        std::cout << "Running LinkedList tests" << std::endl;
         insert();
+        std::cout << "insert passed" << std::endl;
         insertIndex();
+        std::cout << "insertIndex passed" << std::endl;
         remove();
+        std::cout << "remove passed" << std::endl;
         removeIndex();
+        std::cout << "removeIndex passed" << std::endl;
         find();
+        std::cout << "find passed" << std::endl;
     }
 };
+
+
+int main(){
+    LinkedListTest l;
+    l.run();
+    return 0;
+}

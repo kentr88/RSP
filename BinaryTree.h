@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <vector>
 
 
 class BinaryTree {
@@ -15,48 +17,89 @@ private:
     };
 
     Node * root = nullptr;
+    std::string inorderText;
+    std::string preorderText;
+    std::string postorderText;
 
     void inorder(Node * node){
         if(node == nullptr) return;
-
         // recurse left
         inorder(node->left);        
-
         // print self
         std::cout << node->value << " ";
-
         // recurse right
         inorder(node->right);
     }
 
     void preorder(Node * node){
         if(node == nullptr) return;
-
         // print
         std::cout << node->value << " ";
-
         // left
         preorder(node->left);
-
         // right
         preorder(node->right);
     }
 
     void postorder(Node * node){
         if(node == nullptr) return;
-
         // left
         postorder(node->left);
-
         // right
         postorder(node->right);
-
         // print
         std::cout << node->value << " ";
     }
 
+    void inorderString(Node * node){
+        if(node == nullptr) return;
+        // recurse left
+        inorderString(node->left);        
+        // print self
+        inorderText += node->value + " ";
+        // recurse right
+        inorderString(node->right);
+    }
+
+    void preorderString(Node * node){
+        if(node == nullptr) return;
+        // print
+        preorderText += node->value + " ";
+        // left
+        preorderString(node->left);
+        // right
+        preorderString(node->right);
+    }
+
+    void postorderString(Node * node){
+        if(node == nullptr) return;
+        // left
+        postorderString(node->left);
+        // right
+        postorderString(node->right);
+        // print
+        postorderText += node->value + " ";
+    }
+
+    void deleteNode(Node * node){
+        if(node == nullptr) return;
+        // recurse left then right side
+        deleteNode(node->left);
+        deleteNode(node->right);
+        // delete self when finished
+        delete node;
+    }
+
 public:
+    // create empty tree
     BinaryTree(){}
+
+    // create tree inserting values in order from vector
+    BinaryTree(std::vector<int> values){
+        for(int i = 0; i < values.size(); i++){
+            insert(values[i]);
+        }
+    }
 
 
     bool insert(int value){
@@ -216,6 +259,31 @@ public:
 
     void postorder(){
         if(root != nullptr) postorder(root);
+    }
+
+    std::string inorderString(){
+        inorderText = "";
+        if(root != nullptr) inorderString(root);
+        return inorderText;
+    }
+   
+
+    std::string preorderString(){
+        preorderText = "";
+        if(root != nullptr) preorderString(root);
+        return preorderText;
+    }
+
+    std::string postorderString(){
+        postorderText = "";
+        if(root != nullptr) postorderString(root);
+        return postorderText;
+    }
+
+
+    ~BinaryTree(){
+        // traverse and delete all nodes
+        deleteNode(root);
     }
 
 };
