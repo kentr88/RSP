@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 class LinkedList {
 private:
@@ -20,6 +21,7 @@ private:
 public:
     LinkedList(){
         head = nullptr;
+        tail = nullptr;
         size = 0;
     }
 
@@ -157,5 +159,28 @@ public:
         }
     }
 
+    std::string printString(){
+        Node * current = head;
+        std::string s;
+        while(current->next != nullptr){
+            s += current->value + " ";
+        }
+    }
+
+    int tailValue(){
+        if(tail == nullptr) return -1;
+        return tail->value;
+    }
+
+
+    ~LinkedList(){
+        // delete all nodes (heap allocated)
+        Node * current = head;
+        while(current->next != nullptr){
+            Node * temp = current->next;
+            delete current;
+            current = temp;
+        }
+    }
 
 };
