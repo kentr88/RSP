@@ -44,9 +44,10 @@ public:
         visited.resize(graph.getGraph().size(), false);
         order.reserve(graph.getGraph().size());     // preallocate for efficiency without setting
 
+        // empty graph
+        if(graph.getGraph().size() == 0) return;
         run_bfs(graph, startNode);
     }
-
 
     void printOrder(){
         for(int i : order){
@@ -55,5 +56,7 @@ public:
         std::cout << "\n";
     }
 
-
+    std::vector<int> getOrder(){
+        return order;
+    }
 };

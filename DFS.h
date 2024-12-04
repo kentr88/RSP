@@ -36,6 +36,8 @@ public:
         visited.resize(graph.getGraph().size(), false);
         order.reserve(graph.getGraph().size());
 
+        // empty graph
+        if(graph.getGraph().size() == 0) return;
         run_dfs(graph, startNode);
     }
 
@@ -44,6 +46,10 @@ public:
             std::cout << i << " ";
         }
         std::cout << "\n";
+    }
+
+    std::vector<int> getOrder(){
+        return order;
     }
 
 };
