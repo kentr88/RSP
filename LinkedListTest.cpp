@@ -8,7 +8,7 @@ class LinkedListTest {
 private:
 
     bool checkList(LinkedList& list, std::string expectedList, int expectedLastValue){
-        return list.printString() == expectedList && list.tailValue() == expectedLastValue;
+        return list.getValues() == expectedList && list.tailValue() == expectedLastValue;
     }
 
 

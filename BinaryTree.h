@@ -22,36 +22,6 @@ private:
     std::string preorderText;
     std::string postorderText;
 
-    void inorder(Node * node){
-        if(node == nullptr) return;
-        // recurse left
-        inorder(node->left);        
-        // print self
-        std::cout << node->value << " ";
-        // recurse right
-        inorder(node->right);
-    }
-
-    void preorder(Node * node){
-        if(node == nullptr) return;
-        // print
-        std::cout << node->value << " ";
-        // left
-        preorder(node->left);
-        // right
-        preorder(node->right);
-    }
-
-    void postorder(Node * node){
-        if(node == nullptr) return;
-        // left
-        postorder(node->left);
-        // right
-        postorder(node->right);
-        // print
-        std::cout << node->value << " ";
-    }
-
     void inorderString(Node * node){
         if(node == nullptr) return;
         // recurse left
@@ -106,7 +76,8 @@ public:
         }
     }
 
-
+    // insert value into tree
+    // return true if successful, false if value already exists
     bool insert(int value){
         if(root == nullptr){
             root = new Node(value);
@@ -142,7 +113,7 @@ public:
         }
     }
 
-    // 
+    // check if value is in tree
     bool contains(int value){
         if(root == nullptr) return false;
         Node * current = root;
@@ -158,7 +129,8 @@ public:
         return false;
     }
 
-
+    // remove value from tree - rearrange tree accordingly
+    // will return false if value is not in tree
     bool remove(int value){
         if(root == nullptr) return false;
 
@@ -263,34 +235,22 @@ public:
         return true;
     }
 
-    
-    void inorder(){
-        if(root != nullptr) inorder(root);
-    }
-   
-
-    void preorder(){
-        if(root != nullptr) preorder(root);
-    }
-
-    void postorder(){
-        if(root != nullptr) postorder(root);
-    }
-
-    std::string inorderString(){
+    // return string of preorder 
+    std::string inorder(){
         inorderText = "";
         if(root != nullptr) inorderString(root);
         return inorderText;
     }
    
-
-    std::string preorderString(){
+    // return string of preorder
+    std::string preorder(){
         preorderText = "";
         if(root != nullptr) preorderString(root);
         return preorderText;
     }
 
-    std::string postorderString(){
+    // return string of postorder
+    std::string postorder(){
         postorderText = "";
         if(root != nullptr) postorderString(root);
         return postorderText;

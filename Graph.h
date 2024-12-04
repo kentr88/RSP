@@ -10,7 +10,6 @@ class Graph {
 private:
     // node class stored in vector
     // each node has a linked list for edges, value being the value of the other node
-
     class Node {
         std::set<int> edges;
 
@@ -43,7 +42,6 @@ private:
                 std::cout << e << " ";
             }
         }
-
     };
 
     std::vector<Node*> nodes;
@@ -66,19 +64,25 @@ public:
         return size;
     }
 
+    // return set of edges from node
+    // set is sorted in assending order
+    // if node doesn't exist returns empty set
     std::set<int> getEdges(int node){
         // if invalid node returns empty set
         if(nodes[node] == nullptr) return std::set<int>();
         return nodes[node]->getEdges();
     }
 
-    // returns index of new node
+    // inserts new node and returns index 
     int addNode(){
         nodes.push_back(new Node());
         size ++;
         return (int) nodes.size() - 1;
     }
 
+
+    // inserts new node at index, making node vector larger
+    // returns false if index is negative or node already exists
     bool addNode(int index){
         if(index < 0) return false;
         // check if node already exists - greater than size won't exist
@@ -91,6 +95,7 @@ public:
         size++;
         return true;
     }
+
 
     // inserts edge from start -> end
     // return false if nodes don't exist or already exists
@@ -110,6 +115,7 @@ public:
         return true;
     }
 
+
     // removes edge from start -> end
     // return false if nodes or edge doesn't exist 
     bool removeEdge(int start, int end){
@@ -126,6 +132,8 @@ public:
         return true;
     }
 
+    // removes node at index by setting to null
+    // removes all edges connected to node
     bool removeNode(int index){
         if(index > (int) nodes.size() - 1 || nodes[index] == nullptr) return false; 
         
@@ -142,6 +150,7 @@ public:
         return true;
     }
 
+    // prints each node and adjacency list
     void printGraph(){
         for(int i = 0; i < (int) nodes.size(); i++){
             std::cout << i << ": ";

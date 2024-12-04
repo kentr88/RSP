@@ -16,7 +16,7 @@ private:
     };
 
     Node * head;
-    Node * tail;    // store last node for quick insertion
+    Node * tail;    // store last node for quick back insertion
     int size;
 
 public:
@@ -80,7 +80,7 @@ public:
         last->next = node;
     }
 
-    // delete by searching value
+    // delete by searching for value
     bool remove(int value){
         if(head == nullptr) return false;
 
@@ -117,7 +117,8 @@ public:
     }
 
 
-    // 
+    // remove certain index in tree
+    // return false if index is out of bounds
     bool removeIndex(int index){
         if(index >= size) return false;
         if(index < 0) return false;
@@ -165,6 +166,7 @@ public:
         return -1;
     }
 
+    // print to console
     void print(){
         if(head == nullptr) return;
         Node * current = head;
@@ -175,7 +177,9 @@ public:
         std::cout << "\n";
     }
 
-    std::string printString(){
+    // return string of values
+    // in format a b c d (with a space on the end)
+    std::string getValues(){
         if(head == nullptr) return "";
         Node * current = head;
         std::string s;
@@ -187,6 +191,7 @@ public:
         return s;
     }
 
+    // return last value in list
     int tailValue(){
         if(tail == nullptr) return -1;
         return tail->value;

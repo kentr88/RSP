@@ -11,11 +11,14 @@ private:
     std::vector<bool> visited;
     std::vector<int> order;
 
+    // will start at node and progress outwards, starting with direct connections, then their connections and so on.
     void run_bfs(Graph graph, int start){        
         // create queue and add first node
         queue.push(start);
         
+        // while there are nodes in the queue, process in order
         while(!queue.empty()){
+            // get front node to process and remove
             int current = queue.front();
             queue.pop();
 
@@ -39,6 +42,7 @@ private:
     }
 
 public:
+    // takes graph type and index of node to start the search at.
     BFS(Graph graph, int startNode){
         // create visited graph
         visited.resize(graph.getGraph().size(), false);
@@ -49,6 +53,7 @@ public:
         run_bfs(graph, startNode);
     }
 
+    // print saved traversal order
     void printOrder(){
         for(int i : order){
             std::cout << i << " ";
@@ -56,6 +61,7 @@ public:
         std::cout << "\n";
     }
 
+    // get saved traversal order for checking
     std::vector<int> getOrder(){
         return order;
     }

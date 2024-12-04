@@ -9,7 +9,7 @@ class BinaryTreeTest {
 private:
     // preorder prints self, left then right
     bool testTree(BinaryTree& tree, std::string expectedPreorder){
-        std::string preorder = tree.preorderString();
+        std::string preorder = tree.preorder();
         return preorder == expectedPreorder;
     }
 

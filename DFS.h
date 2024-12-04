@@ -13,6 +13,8 @@ private:
     std::vector<bool> visited;
     std::vector<int> order;
 
+    // will start at node and continuously choose the first child until it hits a dead end
+    // then goes back to last node with an unvisited child and repeats
     void run_dfs(Graph graph, int node){
 
         visited[node] = true;   // don't need to check if already visited
@@ -32,6 +34,7 @@ private:
     }
 
 public:
+    // takes graph type and index of node to start the search at.
     DFS(Graph graph, int startNode){
         visited.resize(graph.getGraph().size(), false);
         order.reserve(graph.getGraph().size());
@@ -41,6 +44,7 @@ public:
         run_dfs(graph, startNode);
     }
 
+    // print saved traversal order
     void printOrder(){
         for(int i : order){
             std::cout << i << " ";
@@ -48,6 +52,7 @@ public:
         std::cout << "\n";
     }
 
+    // get saved traversal order for checking
     std::vector<int> getOrder(){
         return order;
     }
