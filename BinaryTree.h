@@ -4,7 +4,7 @@
 
 
 class BinaryTree {
-private:
+public:
     class Node {
     public:
         int value;
@@ -16,6 +16,7 @@ private:
         }
     };
 
+private:
     Node * root = nullptr;
     std::string inorderText;
     std::string preorderText;
@@ -56,7 +57,7 @@ private:
         // recurse left
         inorderString(node->left);        
         // print self
-        inorderText += node->value + " ";
+        inorderText += std::to_string(node->value) + " ";
         // recurse right
         inorderString(node->right);
     }
@@ -64,7 +65,7 @@ private:
     void preorderString(Node * node){
         if(node == nullptr) return;
         // print
-        preorderText += node->value + " ";
+        preorderText += std::to_string(node->value) + " ";
         // left
         preorderString(node->left);
         // right
@@ -78,7 +79,7 @@ private:
         // right
         postorderString(node->right);
         // print
-        postorderText += node->value + " ";
+        postorderText += std::to_string(node->value) + " ";
     }
 
     void deleteNode(Node * node){
@@ -94,9 +95,13 @@ public:
     // create empty tree
     BinaryTree(){}
 
+    Node * getRoot(){
+        return root;
+    }
+
     // create tree inserting values in order from vector
     BinaryTree(std::vector<int> values){
-        for(int i = 0; i < values.size(); i++){
+        for(int i = 0; i < (int) values.size(); i++){
             insert(values[i]);
         }
     }
@@ -112,10 +117,10 @@ public:
         Node * current = root;
         
         while(true){
-            if(value == root->value){
+            if(value == current->value){
                 // fail
                 return false;
-            } else if(value > root->value){
+            } else if(value > current->value){
                 //right
                 if(current->right == nullptr){
                     // insert
@@ -135,67 +140,67 @@ public:
                 }
             }
         }
-
-
     }
 
     // 
     bool contains(int value){
         if(root == nullptr) return false;
         Node * current = root;
-        while(true){
-            if(current->value == value) return true;
-
-            if(current->value > value){
-                if(current->right == nullptr) return false;
+        while(current != nullptr){
+            if(value == current->value){
+                return true;
+            } else if(value > current->value){
                 current = current->right;
-            }
-
-            if(current->value < value){
-                if(current->left == nullptr) return false;
+            } else if(value < current->value){
                 current = current->left;
             }
         }
+        return false;
     }
 
 
     bool remove(int value){
         if(root == nullptr) return false;
 
-        // remove root exception
-        if(root->value == value){
-            // find rightmost in left
-
-        }
-        
-        // find value
+         // find value
         Node * parent = nullptr;
         Node * current = root;
         bool right = false;     // last direction
-        while(true){
+        bool isRoot = false;
+
+        // remove root exception
+        if(root->value == value) isRoot = true;
+       
+        while(current != nullptr && isRoot == false){
             if(current->value == value){
                 break;
-            }
-
-            // right
-            if(current->value > value){
-                if(current->right == nullptr) return false; // couldn't be found
+            } else if(value > current->value){
+                // right
                 parent = current;
                 current = current->right;
                 right = true;
-            }
-
-            // left
-            if(current->value < value){
-                if(current->left == nullptr) return false;  // couldn't be found
+            } else if(value < current->value){
+                // left
                 parent = current;
                 current = current->left;
                 right = false;
             }
         }
 
-        // check number of children
+        // not found
+        if(current == nullptr) return false;
+
+        // check number of children //
+
+        // no children
         if(current->left == nullptr && current->right == nullptr){
+            // root node
+            if(isRoot){
+                delete root;
+                root = nullptr;
+                return true;
+            }
+
             // no children, only delete from parent
             if(right) parent->right = nullptr;
             else parent->left = nullptr;
@@ -206,40 +211,51 @@ public:
 
         // 1 child
         if(current->left == nullptr || current->right == nullptr){
-            // move child to replace in parent
-
             // get current's only child
             Node * child;
             if(current->left != nullptr) child = current->left;
             else child = current->right;
 
             // add to parent
-            if(right) parent->right = child;
-            else parent->left = child;
+            if(isRoot){
+                // most likely 2 node tree 
+                root = child;
+            } else {
+                if(right) parent->right = child;
+                else parent->left = child;
+            }
 
             // delete
             delete current;
             return true;          
         }
 
-        // two nodes, replace with largest/smallest on that side
+        // two children, replace with largest/smallest on that side
         // look for rightmost in left subtree
-        Node * temp = current->left;    // go into left tree
         Node * tempParent = current;
+        Node * temp = current->left;    // go into left tree
         // keep going right
         while(temp->right != nullptr){
             tempParent = temp;
             temp = temp->right;
         }
 
-        // move temp up to origional node
-        if(right) parent->right = temp;
-        else parent->left = temp;
+        // fix temp's parent
+        // if temp had a left node, or could just be nullptr
+        if(tempParent != current) tempParent->right = temp->left; 
+        else tempParent->left = temp->left; // if temp was left child of current
 
-        // fix up temp leafs
-        tempParent->right = temp->left; //if temp had a left node
+        // if root node or has a parent
+        if(isRoot){
+            root = temp;
+        } else {
+            // move temp up to origional node
+            if(right) parent->right = temp;
+            else parent->left = temp;
+        }
 
-        // fix current's leafs
+
+        // fix current/root children
         temp->left = current->left;
         temp->right = current->right;
 

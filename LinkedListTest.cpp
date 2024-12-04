@@ -181,30 +181,34 @@ private:
         assert(l.find(8) == 3);
         assert(l.find(5) == 0);
         assert(l.find(2) == 2);
+        std::cout << "test 1 passed" << std::endl;
     }
 
 
 public:
-    LinkedListTest(){}
-
-    void run(){
-        std::cout << "Running LinkedList tests" << std::endl;
+    LinkedListTest(){
+        std::cout << "Running LinkedList Tests" << std::endl;
         insert();
-        std::cout << "insert passed" << std::endl;
+        std::cout << "\n";
+        std::cout << "Running InsertIndex Tests" << std::endl;
         insertIndex();
-        std::cout << "insertIndex passed" << std::endl;
+        std::cout << "\n";
+        std::cout << "Running Remove Tests" << std::endl;
         remove();
-        std::cout << "remove passed" << std::endl;
+        std::cout << "\n";
+        std::cout << "Running RemoveIndex Tests" << std::endl;
         removeIndex();
-        std::cout << "removeIndex passed" << std::endl;
+        std::cout << "\n";
+        std::cout << "Running Find Tests" << std::endl;
         find();
-        std::cout << "find passed" << std::endl;
+        std::cout << "\n";
+        std::cout << "Finished" << std::endl;
     }
+
 };
 
 
 int main(){
     LinkedListTest l;
-    l.run();
     return 0;
 }

@@ -51,7 +51,10 @@ private:
 
 public:
     Graph(int startingNodes){
-        nodes.resize(startingNodes, new Node());
+        nodes.resize(startingNodes);
+        for(int i = 0; i < startingNodes; i++){
+            nodes[i] = new Node();
+        }
         size = startingNodes;
     }
 
@@ -77,7 +80,9 @@ public:
     }
 
     bool addNode(int index){
-        if(index > (int) nodes.size() -1 || nodes[index] != nullptr) return false;
+        if(index < 0) return false;
+        // check if node already exists - greater than size won't exist
+        if(index < (int) nodes.size() && nodes[index] != nullptr) return false;
 
         // reszie list to include
         nodes.resize(index + 1, nullptr);
@@ -93,9 +98,10 @@ public:
         // out of bounds
         if(start > (int) nodes.size() - 1 || end > (int) nodes.size() - 1) return false; 
         if(nodes[start] == nullptr || nodes[end] == nullptr) return false;
+        if(start == end) return false;
 
         // already exists
-        if(nodes[start]->contains(end) || nodes[end]->contains(start)) return false;
+        if(nodes[start]->contains(end) && nodes[end]->contains(start)) return false;
 
         // add into lists
         nodes[start]->add(end);
@@ -104,14 +110,15 @@ public:
         return true;
     }
 
-    // 
+    // removes edge from start -> end
+    // return false if nodes or edge doesn't exist 
     bool removeEdge(int start, int end){
         // out of bounds
         if(start > (int) nodes.size() - 1 || end > (int) nodes.size() - 1) return false; 
         if(nodes[start] == nullptr || nodes[end] == nullptr) return false;
 
         // check exists
-        if(!nodes[start]->contains(end) || !nodes[end]->contains(start)) return false;
+        if(!(nodes[start]->contains(end) && nodes[end]->contains(start))) return false;
 
         // remove from lists 
         nodes[start]->remove(end);
@@ -130,12 +137,14 @@ public:
 
         // delete
         delete nodes[index];
+        nodes[index] = nullptr;
         size--;
         return true;
     }
 
     void printGraph(){
-        for(int i = 0; i < nodes.size(); i++){
+        for(int i = 0; i < (int) nodes.size(); i++){
+            std::cout << i << ": ";
             nodes[i]->print();
             std::cout << "\n";
         }
